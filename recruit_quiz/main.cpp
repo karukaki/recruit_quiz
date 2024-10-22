@@ -1,15 +1,11 @@
+#include "question.h"
 #include <iostream>
 #include <string>
 #include <vector>
 #include <random>
 using namespace std;
 
-//問題文と答えをまとめる構造体
-struct Question
-{
-	string q;
-	string a;
-};
+
 
 //最大公約数を求める
 int gcd(int a, int b)
@@ -54,25 +50,29 @@ int main()
 	//三角形の面積
 	x = uniform_int_distribution<>(1, 10)(rand);
 	y = uniform_int_distribution<>(1, 5)(rand) * 2;
-	questions[3].a = ("面積" + to_string(x * y / 2) + "cm^2,底辺" + to_string(y) + "cmの三角形の高さを求めよ。",x);
+	questions[3].q = ("面積" + to_string(x * y / 2) + "cm^2,底辺" + to_string(y) + "cmの三角形の高さを求めよ。");
+	questions[3].a = to_string(x);
 
 	//円錐の体積
 	x = uniform_int_distribution<>(1, 10)(rand);
 	y = uniform_int_distribution<>(1, 5)(rand) * 3;
-	questions[4].a = ("底面の半径" + to_string(x) + "cm,高さ" + to_string(y) + "cmの円錐がある。\n" + 
-		"この円錐の体積をXπcm^3とする。Xの値を求めよ。",x * x * y / 3);
+	questions[4].q = ("底面の半径" + to_string(x) + "cm,高さ" + to_string(y) + "cmの円錐がある。\n" + 
+		"この円錐の体積をXπcm^3とする。Xの値を求めよ。");
+	questions[4].a = to_string(x * x * y / 3);
 
 	//球の体積
 	x = uniform_int_distribution<>(1, 5)(rand) * 3;
-	questions[5].a = ( "球の半径" + to_string(x) + "cmの球がある。\n" + 
-		"この球の体積をXπcm^3とする。Xの値を求めよ。",x * x * x * 4 / 3);
+	questions[5].q = ( "球の半径" + to_string(x) + "cmの球がある。\n" + 
+		"この球の体積をXπcm^3とする。Xの値を求めよ。");
+	questions[5].a = to_string(x * x * x * 4 / 3);
 
 	//サイコロの確率
 	x = uniform_int_distribution<>(1, 5)(rand);
 	y = uniform_int_distribution<>(1, 6 - x)(rand);
 	z = gcd(y + 1, 6);
-	questions[6].a=("サイコロを１個ふって," + to_string(x) + "から" + to_string(x + y) +
-		"が出る確率を求めよ。",to_string((y + 1) / z) + "/" + to_string(6 / z));
+	questions[6].q = ("サイコロを１個ふって," + to_string(x) + "から" + to_string(x + y) +
+		"が出る確率を求めよ。");
+	questions[6].a = to_string((y + 1) / z) + "/" + to_string(6 / z);
 
 	//順列
 	x = uniform_int_distribution<>(3, 7)(rand);
@@ -81,7 +81,8 @@ int main()
 	for (int i = 0; i < y; ++i) {
 		z *= x - i;
 	}
-	questions[7].a = (to_string(x) + "人のうち" + to_string(y) + "人を選んで並べる方法は何通りあるか？",to_string(z));
+	questions[7].q = (to_string(x) + "人のうち" + to_string(y) + "人を選んで並べる方法は何通りあるか？");
+	questions[7].a = to_string(z);
 
 	//組み合わせ
 	x = uniform_int_distribution<>(3, 6)(rand);
@@ -90,7 +91,11 @@ int main()
 	for (int i = 0; i < y; ++i) {
 		z *= x - i;
 	}
-	questions[8].a = (to_string(x) + "人のうち" + to_string(y) + "人を選ぶ組み合わせは何通りあるか？",to_string(z));
+	for (int i = 0; i < y; ++i) {
+		z /= y - i;
+	}
+	questions[8].q = (to_string(x) + "人のうち" + to_string(y) + "人を選ぶ組み合わせは何通りあるか？");
+	questions[8].a = to_string(z);
 
 	cout << "[リクルート対策クイズ]\n";
 
