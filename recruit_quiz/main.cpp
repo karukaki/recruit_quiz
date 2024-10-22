@@ -1,5 +1,6 @@
 #include "question.h"
 #include "exam_japanese.h"
+#include "utility.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -105,7 +106,8 @@ int main()
 	cin >> subject;
 	if (subject == 2) {
 		questions = CreateKanjiExam();
-		
+		const QuestionList idiomExam = CreateIdiomExam();
+		questions.insert(questions.end(), idiomExam.begin(), idiomExam.end());
 	}
 
 
