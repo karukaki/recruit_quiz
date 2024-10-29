@@ -4,8 +4,8 @@
 using namespace std;
 
 /*
-+* 漢字の読み取り問題を作成する
-+*/
+* 漢字の読み取り問題を作成する
+*/
 QuestionList CreateKanjiExam()
 {
 	static const struct {
@@ -93,30 +93,102 @@ QuestionList CreateIdiomExam()
 	{ "身命を賭す", "命を投げ出す覚悟で努力する" },
 };
 
-		constexpr int quizCount = 5;
-		QuestionList questions;
-		questions.reserve(quizCount);
-		const vector<int> indices = CreateRandomIndices(size(data));
-		random_device rd;
+	constexpr int quizCount = 5;
+	QuestionList questions;
+	questions.reserve(quizCount);
+	const vector<int> indices = CreateRandomIndices(size(data));
+	random_device rd;
 		
-			for (int i = 0; i < quizCount; i++) {
-			    // 間違った番号をランダムに選ぶ
-			const int correctIndex = indices[i];
-			vector<int> answers = CreateWrongIndices(size(data), correctIndex);
+	for (int i = 0; i < quizCount; i++) {
+	    // 間違った番号をランダムに選ぶ
+	const int correctIndex = indices[i];
+	vector<int> answers = CreateWrongIndices(size(data), correctIndex);
+	
+	    // ランダムな位置を正しい番号で上書き
+	const int correctNo = uniform_int_distribution<>(1, 3)(rd);
+	answers[correctNo - 1] = correctIndex;
+	
+	    // 問題文を作成
+	string s = "「" + string(data[correctIndex].idiom) + "」の意味として正しい番号を選べ";
+	for (int j = 0; j < 3; j++) {
+		s += "\n  " + to_string(j + 1) + ":" + data[answers[j]].meaning;
+	
+		}
+	
+		questions.push_back({ s, to_string(correctNo) });
+		
+	}
+	 return questions;
+}
+
+//同じ読みで意味の異なる漢字の問題を作成する
+QuestionList CreateHomophoneExam()
+{
+	const struct {
+		const char* reading;   // 読み
+		struct {
+			const char* kanji;   // 漢字
+			const char* meaning; // 意味
 			
-			    // ランダムな位置を正しい番号で上書き
-			const int correctNo = uniform_int_distribution<>(1, 3)(rd);
-			answers[correctNo - 1] = correctIndex;
-			
-			    // 問題文を作成
-			string s = "「" + string(data[correctIndex].idiom) + "」の意味として正しい番号を選べ";
-			for (int j = 0; j < 3; j++) {
-			s += "\n  " + to_string(j + 1) + ":" + data[answers[j]].meaning;
-			
-			}
-			
-				questions.push_back({ s, to_string(correctNo) });
+		} words[3];
+		
+	} data[] = {
+	{ "じき", {
+	{ "時期", "何かを行うとき、期間。" },
+	{ "時機" , "物事を行うのによい機会" }}},
+	{ "そうぞう", {
+	{ "想像", "実際には経験していない事柄を思い描くこと" },
+	{ "創造", "新しいものを作り上げること" }}},
+	{ "ほしょう", {
+	{ "保証", "間違いがなく確かであると約束すること" },
+	{ "保障", "権利や地位などが維持されるように保護し守ること" },
+	{ "補償", "損失をおぎなってつぐなうこと" }}},
+	{ "たいしょう", {
+	{ "対象", "行為の目標となるもの" },
+	{ "対称", "２つの図形や物事が互いにつり合っていること" },
+	{ "対照", "見比べること、違いが際立つこと" }}},
+	{ "あやまる", {
+	{ "謝る", "失敗について許しを求める" },
+	{ "誤る", "間違った判断をする" }}},
+	{ "おさめる", {
+	{ "納める", "金や物を渡すべきところに渡す" },
+	{ "治める", "乱れている物事を落ち着いて穏やかな状態にする" },
+	{ "修める", "行いや人格を正しくする、学問や技芸などを学んで身につける" }}},
+	};
+
+	constexpr int quizCount = 5;
+	QuestionList questions;
+	questions.reserve(quizCount);
+	const vector<int> indices = CreateRandomIndices(size(data));
+	random_device rd;
+	
+	for (int i = 0; i < quizCount; i++) {
+	const auto & e = data[indices[i]];
+	
+		    // 要素数を計算
+		int count = 0;
+	for (; count < size(e.words); count++) {
+		if (!e.words[count].kanji) {
+			break;
 			
 		}
-		 return questions;
-		}
+		
+	}
+	
+	// 正しい番号を選択
+	const int correctNo = uniform_int_distribution<>(1, count)(rd);
+	
+	// 問題文を作成
+	const vector<int> answers = CreateRandomIndices(count);
+	string s = "「" + string(e.words[answers[correctNo - 1]].kanji) +
+		"」の意味として正しい番号を選べ";
+	for (int j = 0; j < count; j++) {
+		s += "\n  " + to_string(j + 1) + ":" + e.words[answers[j]].meaning;
+		
+	}
+	 questions.push_back({ s, to_string(correctNo) });
+		
+	}
+	
+	return questions;
+}
