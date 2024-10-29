@@ -110,6 +110,8 @@ int main()
 		questions.insert(questions.end(), idiomExam.begin(), idiomExam.end());
 		QuestionList homophoneExam = CreateHomophoneExam();
 		questions.insert(questions.end(), homophoneExam.begin(), homophoneExam.end());
+		QuestionList antonymExam = CreateAntonymExam();
+		questions.insert(questions.end(), antonymExam.begin(), antonymExam.end());
 	}
 
 
