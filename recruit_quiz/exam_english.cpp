@@ -250,3 +250,15 @@ QuestionList CreateEnglishPhraseExam()
 		
 	return questions;
 }
+
+QuestionList CreateEnglishWordExam()
+{
+	QuestionList questions;
+	questions = CreateEnglishWordExam();
+
+	// ‰pŒê‚Ì’èŒ^•¶‚Ì–â‘è‚ğì¬‚·‚é
+	QuestionList phraseExam = CreateEnglishPhraseExam();
+	questions.insert(questions.end(), phraseExam.begin(), phraseExam.end());
+
+	return questions;
+}
