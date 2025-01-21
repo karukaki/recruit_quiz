@@ -10,6 +10,7 @@ struct Question
 {
 	std::string q;
 	std::string a;
+	std::vector<std::string> b; // “š‚¦(•¡”‚ ‚éê‡)
 };
 //–â‘è‚Ì”z—ñ‚ğ‚ ‚ç‚í‚·Œ^
 using QuestionList = std::vector<Question>;
