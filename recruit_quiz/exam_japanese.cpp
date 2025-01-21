@@ -363,3 +363,22 @@ for (int i = 0; i < quizCount; i++) {
 
 return questions;
 }
+
+/*
+* ‘Œê‚Ì–â‘è‚ðì¬‚·‚é
+*/
+QuestionList CreateJapaneseExam()
+{
+	QuestionList questions;
+	questions = CreateKanjiExam();
+	QuestionList idiomExam = CreateIdiomExam();
+	questions.insert(questions.end(), idiomExam.begin(), idiomExam.end());
+	QuestionList homophoneExam = CreateHomophoneExam();
+	questions.insert(questions.end(), homophoneExam.begin(), homophoneExam.end());
+	QuestionList antonymExam = CreateAntonymExam();
+	questions.insert(questions.end(), antonymExam.begin(), antonymExam.end());
+	QuestionList synonymExam = CreateSynonymExam();
+	questions.insert(questions.end(), synonymExam.begin(), synonymExam.end());
+
+	return questions;
+}
